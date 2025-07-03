@@ -8,20 +8,20 @@ interface Props {
 
 const ProductsList = ({ products }: Props) => {
   return (
-    <div>
+    <>
       {products.length === 0 ? (
         <p>No products to display.</p>
       ) : (
-        <ul>
+        <ul className='mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
           {products?.map((product) => {
             return <ProductCard key={product.id} product={product} />;
           })}
         </ul>
       )}
-    </div>
+    </>
   );
 };
 
 ProductsList.displayName = "ProductsList";
 
-export default ProductsList;
+export default memo(ProductsList);

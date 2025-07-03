@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { memo } from "react";
 import type Stripe from "stripe";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Button } from "./ui/button";
 
 interface Props {
   product: Stripe.Product;
@@ -12,31 +13,43 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <li>
-      <Link to='/products/$productName' params={{ productName: "1" }}>
-        <Card>
+      <div className='block h-full'>
+        <Card className='group hover:shadow-2xl transition flex justify-end duration-300 py-0 h-full border-gray-300 gap-0'>
           {product.images && product.images[0] && (
-            <div className='relative w-full h-[400px] flex justify-center items-center aspect-[4/5]'>
+            <div className='relative h-60 w-full flex justify-center items-center overflow-clip'>
               <img
                 src={product.images[0]}
                 alt={product.name}
-                className='w-full h-full object-contain transition-opacity duration-500 ease-in-out'
+                className='group-hover:opacity-90 transition-opacity duration-300 rounded-t-lg object-cover'
               />
             </div>
           )}
 
-          <CardHeader>
+          <div className='p-4 flex flex-col justify-center'>
+            <CardHeader>
+              <CardTitle className='text-xl font-bold text-gray-800'>{product.name}</CardTitle>
+            </CardHeader>
+
             <CardContent>
-              <CardTitle className='font-bold text-lg text-gray-700'>{product.name}</CardTitle>
-              <p>
-                {price && price.unit_amount && (
-                  <p className='text-xl text-gray-700'>${price.unit_amount / 100}</p>
-                )}
-              </p>
-              <p className='text-sm text-gray-600'>{product.description}</p>
+              {price && price.unit_amount && (
+                <p className='text-lg font-semibold text-gray-900'>
+                  ${(price.unit_amount / 100).toFixed(2)}
+                </p>
+              )}
+
+              <Button asChild>
+                <Link
+                  to={`/products/$productId`}
+                  params={{ productId: product.id }}
+                  className='mt-4 w-full bg-black text-white pointer'
+                >
+                  View Details
+                </Link>
+              </Button>
             </CardContent>
-          </CardHeader>
+          </div>
         </Card>
-      </Link>
+      </div>
     </li>
   );
 };
